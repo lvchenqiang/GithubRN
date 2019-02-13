@@ -8,22 +8,42 @@ import NavigationUtil from '../navigator/NavigationUtil';
 
 
 export default class PopularPage extends Component {
-  render() {
 
-  const TabNavigator = createMaterialTopTabNavigator({
-        PopularTab1:{
-          screen:PopularTab,
-          navigationOptions:{
-            title:"tab1"
+     
+  constructor(props){
+      super(props);
+      this.tabNames = ["Java","Android","iOS","React","React Native","PHP"];
+
+  }
+
+  _genTab(){
+      const tabs = {};
+      this.tabNames.forEach((item,index) => {
+        tabs[`tab${index}`] = {
+            screen: props => <PopularTab {...props} tabLabel={item}/>,
+            navigationOptions:{
+                title:item
+            }
+        }
+      });
+      return tabs;
+  }
+  render() {
+  const TabNavigator = createMaterialTopTabNavigator(
+      this._genTab(),
+      {
+          tabBarOptions:{
+              tabStyle:styles.tabStyle,
+              upperCaseLabel:false, // 标签是否大写
+              scrollEnabled:true,// 是否可以滚动
+              style:{
+                  backgroundColor: '#678', //tabbar的背景色
+              },
+              indicatorStyle:styles.indicatorStyle,
+              labelStyle:styles.labelStyle
           }
-        },
-        PopularTab2:{
-          screen:PopularTab,
-          navigationOptions:{
-            title:"tab2"
-          }
-        } 
-  });
+      }
+  );
    
   return <View style={{flex:1,marginTop: 30}}>
     <TabNavigator/>
@@ -58,14 +78,18 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#F5FCFF',
   },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
+  tabStyle: {
+    minWidth:50,
   },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
+  indicatorStyle:{
+      height:2,
+      backgroundColor:'white'
   },
+  labelStyle:{
+      fontSize:13,
+      marginBottom: 1,
+      marginTop:5,
+  }
+
+
 });
