@@ -7,9 +7,10 @@
     "test": "jest"
   },
   "dependencies": {
+    "GitHubTrending": "^3.0.1",
+    "prop-types": "^15.6.2",
     "react": "16.6.3",
     "react-native": "0.58.4",
-    "prop-types": "^15.6.2",
     "react-native-check-box": "^2.1.7",
     "react-native-code-push": "^5.5.2",
     "react-native-easy-toast": "^1.1.0",
@@ -23,11 +24,9 @@
     "react-native-webview": "^4.0.0",
     "react-navigation": "2.18.2",
     "react-navigation-redux-helpers": "^2.0.9",
-    "react-navigation-tabs": "^1.0.2",
     "react-redux": "^6.0.0",
     "redux": "^4.0.1",
-    "redux-thunk": "^2.3.0",
-    "GitHubTrending": "^3.0.1"
+    "redux-thunk": "^2.3.0"
   },
   "devDependencies": {
     "babel-core": "^7.0.0-bridge.0",

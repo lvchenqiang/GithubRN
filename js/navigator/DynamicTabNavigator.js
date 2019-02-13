@@ -12,7 +12,7 @@ import {
   import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
   import Ionicons from 'react-native-vector-icons/Ionicons';
   import Entypo from 'react-native-vector-icons/Entypo';
-  
+  import {BottomTabBar} from 'react-navigation-tabs';
   import NavigationUtil from './NavigationUtil';
 
 
@@ -20,7 +20,7 @@ import {
     PopularPage:{
       screen:PopularPage,
       navigationOptions:{
-        tabBarLabel:'最热',
+        tabBarLabel:'最新',
         tabBarIcon: ({tintColor, focused}) => (
           <MaterialIcons
               name={'whatshot'}
@@ -81,9 +81,12 @@ export default class HomePage extends Component {
 
   _tabNavigator(){
       const {PopularPage,TrendingPage, FavoritePage, MinePage} = TABS;
-      const tabs = {PopularPage, TrendingPage, FavoritePage};
-
-    return createBottomTabNavigator(tabs,);
+      const tabs = {PopularPage, TrendingPage, FavoritePage,MinePage};
+      PopularPage.navigationOptions.tabBarLabel = "最热";
+      // 动态配置tab
+    return createBottomTabNavigator(tabs,{
+        tabBarComponent:TabBarComponent
+    });
   }
 
 
@@ -93,6 +96,32 @@ export default class HomePage extends Component {
   }
 }
 
+
+class TabBarComponent extends React.Component {
+    constructor(props) {
+        super(props);
+        this.theme = {
+            tintColor: props.activeTintColor,
+            updateTime: new Date().getTime(),
+        }
+    }
+
+    render() {
+        
+        const {routes,index} = this.props.navigation.state;
+        if(routes[index].params){
+            const {theme} = routes[index].params;
+            if(theme && theme.updateTime > this.theme.updateTime){
+                this.theme = theme;
+            }
+        }
+
+        return <BottomTabBar
+            {...this.props}
+            activeTintColor={this.theme.tintColor || this.props.activeTintColor}
+        />
+    }
+}
 
 
 const styles = StyleSheet.create({
