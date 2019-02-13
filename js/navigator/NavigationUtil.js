@@ -9,6 +9,7 @@ export default class NavigationsUtil {
         if(!navigation){
             console.log("navigation can not is null")
         }
+
         navigation.navigate(page,
             {
                 ...params
