@@ -3,7 +3,9 @@ import {Platform, StyleSheet, Text, View} from 'react-native';
 import {
     createBottomTabNavigator,
   } from 'react-navigation';
-  
+  import {connect} from 'react-redux';
+
+
   import PopularPage from '../page/PopularPage';
   import TrendingPage from '../page/TrendingPage';
   import FavoritePage from '../page/FavoritePage';
@@ -71,7 +73,7 @@ import {
     }
   };
 
-export default class HomePage extends Component {
+ class DynamicTabNavigator extends Component {
  
     constructor(props){
         super(props);
@@ -80,12 +82,17 @@ export default class HomePage extends Component {
     }
 
   _tabNavigator(){
+    if(this.Tabs){
+      return this.Tabs;
+    }
       const {PopularPage,TrendingPage, FavoritePage, MinePage} = TABS;
       const tabs = {PopularPage, TrendingPage, FavoritePage,MinePage};
       PopularPage.navigationOptions.tabBarLabel = "最热";
       // 动态配置tab
-    return createBottomTabNavigator(tabs,{
-        tabBarComponent:TabBarComponent
+    return this.Tabs = createBottomTabNavigator(tabs,{
+        tabBarComponent:props => {
+            return <TabBarComponent theme={this.props.theme} {...props}/>
+        }
     });
   }
 
@@ -118,27 +125,14 @@ class TabBarComponent extends React.Component {
 
         return <BottomTabBar
             {...this.props}
-            activeTintColor={this.theme.tintColor || this.props.activeTintColor}
+            activeTintColor={this.props.theme}
         />
     }
 }
 
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
-  },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-  },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
-  },
+const mapStateToProps = state => ({
+    theme: state.theme.theme,
 });
+
+export default connect(mapStateToProps)(DynamicTabNavigator);
