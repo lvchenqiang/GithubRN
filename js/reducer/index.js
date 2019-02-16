@@ -1,6 +1,6 @@
 import {combineReducers} from 'redux'
 import theme from './theme'
-// import popular from './popular'
+import popular from './popular'
 // import trending from './trending'
 // import favorite from './favorite'
 // import language from './language'
@@ -27,7 +27,7 @@ const navReducer = (state = navState, action) => {
 const index = combineReducers({
     nav: navReducer,
     theme: theme,
-    // popular: popular,
+    popular: popular,
     // trending: trending,
     // favorite: favorite,
     // language: language,
