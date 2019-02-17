@@ -5,12 +5,16 @@ import Toast from 'react-native-easy-toast'
 import {
   createMaterialTopTabNavigator,
 } from 'react-navigation';
+import Ionicons from 'react-native-vector-icons/Ionicons'
+
 
 import actions from '../action';
 
 import NavigationUtil from '../navigator/NavigationUtil';
 import FavoriteUtil from "../util/FavoriteUtil";
 import FavoriteDao from "../expand/dao/FavoriteDao";
+import NavigationBar from '../common/NavigationBar';
+
 
 import {FLAG_STORAGE} from "../expand/dao/DataStore";
 import PopularItem from '../common/PopularItem';
@@ -18,7 +22,7 @@ import PopularItem from '../common/PopularItem';
 
 const URL = 'https://api.github.com/search/repositories?q=';
 const QUERY_STR = '&sort=stars';
-const THEME_COLOR = 'red';
+const THEME_COLOR = '#076';
 const favoriteDao = new FavoriteDao(FLAG_STORAGE.flag_popular);
 
 export default class PopularPage extends Component {
@@ -43,6 +47,18 @@ export default class PopularPage extends Component {
       return tabs;
   }
   render() {
+
+    let statusBar = {
+      backgroundColor: THEME_COLOR,
+      barStyle: 'light-content',
+  };
+  let navigationBar = <NavigationBar
+      title={'最热'}
+      statusBar={statusBar}
+      style={{backgroundColor:THEME_COLOR}}
+      // rightButton={this.renderRightButton()}
+  />;
+
   const TabNavigator = createMaterialTopTabNavigator(
       this._genTab(),
       {
@@ -60,6 +76,7 @@ export default class PopularPage extends Component {
   );
    
   return <View style={{flex:1,marginTop: 30}}>
+   {navigationBar}
     <TabNavigator/>
   </View>
   }
