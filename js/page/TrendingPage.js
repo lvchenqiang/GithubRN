@@ -85,6 +85,29 @@ _renderTrendingDialog() {
   />
 }
 
+_genTabNav(){
+  if(this.tabNav){
+    return this.tabNav;
+  }
+  this.tabNav = createMaterialTopTabNavigator(
+    this._genTab(),
+    {
+      tabBarOptions: {
+        tabStyle: styles.tabStyle,
+        upperCaseLabel: false, // 标签是否大写
+        scrollEnabled: true,// 是否可以滚动
+        style: {
+          backgroundColor: '#678', //tabbar的背景色
+          height: 30//fix 开启scrollEnabled后再Android上初次加载时闪烁问题
+        },
+        indicatorStyle: styles.indicatorStyle,
+        labelStyle: styles.labelStyle
+      },
+      lazy: true
+    }
+  );
+  return this.tabNav;
+}
   render() {
 
     let statusBar = {
@@ -98,27 +121,12 @@ _renderTrendingDialog() {
     // rightButton={this.renderRightButton()}
     />;
 
-    const TabNavigator = createMaterialTopTabNavigator(
-      this._genTab(),
-      {
-        tabBarOptions: {
-          tabStyle: styles.tabStyle,
-          upperCaseLabel: false, // 标签是否大写
-          scrollEnabled: true,// 是否可以滚动
-          style: {
-            backgroundColor: '#678', //tabbar的背景色
-            height: 30//fix 开启scrollEnabled后再Android上初次加载时闪烁问题
-          },
-          indicatorStyle: styles.indicatorStyle,
-          labelStyle: styles.labelStyle
-        },
-        lazy: true
-      }
-    );
+    const TabNavigator = this._genTabNav();
 
     return <View style={{ flex: 1, marginTop: 30 }}>
       {navigationBar}
-      <TabNavigator />
+      <TabNavigator/>
+      {/* {TabNavigator && <TabNavigator/>} */}
       {this._renderTrendingDialog()}
     </View>
   }
@@ -137,7 +145,18 @@ class TrendingTab extends Component {
 
   componentDidMount() {
     this.loadData();
+    this.timeSpanChangeListener = DeviceEventEmitter.addListener(EVENT_TYPE_TIME_SPAN_CHANGE, (timeSpan) => {
+      this.timeSpan = timeSpan;
+      this.loadData();
+  });
   }
+
+  componentWillUnmount() {
+    if (this.timeSpanChangeListener) {
+        this.timeSpanChangeListener.remove();
+    }
+    
+}
 
   loadData(loadMore, refreshFavorite) {
     const { onRefreshTrending, onLoadMoreTrending, onFlushTrendingFavorite } = this.props;
@@ -191,7 +210,7 @@ class TrendingTab extends Component {
           callback,
         }, 'DetailPage')
       }}
-    // onFavorite={(item, isFavorite) => FavoriteUtil.onFavorite(favoriteDao, item, isFavorite, FLAG_STORAGE.flag_popular)}
+    onFavorite={(item, isFavorite) => FavoriteUtil.onFavorite(favoriteDao, item, isFavorite, FLAG_STORAGE.flag_popular)}
 
     />
   }
