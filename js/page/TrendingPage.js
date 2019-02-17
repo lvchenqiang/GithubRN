@@ -19,6 +19,9 @@ import NavigationBar from '../common/NavigationBar';
 import { FLAG_STORAGE } from "../expand/dao/DataStore";
 import TrendingItem from '../common/TrendingItem';
 import TrendingDialog, { TimeSpans } from '../common/TrendingDialog'
+import SafeAreaViewPlus from "../common/SafeAreaViewPlus";
+
+
 
 const EVENT_TYPE_TIME_SPAN_CHANGE = "EVENT_TYPE_TIME_SPAN_CHANGE";
 const URL = 'https://github.com/trending/';
@@ -89,7 +92,7 @@ _genTabNav(){
   if(this.tabNav){
     return this.tabNav;
   }
-  this.tabNav = createMaterialTopTabNavigator(
+  this.tabNav = createMaterialTopTabNavigator(//优化效率：根据需要选择是否重新创建建TabNavigator，通常tab改变后才重新创建
     this._genTab(),
     {
       tabBarOptions: {
@@ -123,7 +126,7 @@ _genTabNav(){
 
     const TabNavigator = this._genTabNav();
 
-    return <View style={{ flex: 1, marginTop: 30 }}>
+    return <View style={styles.container}>
       {navigationBar}
       <TabNavigator/>
       {/* {TabNavigator && <TabNavigator/>} */}

@@ -77,7 +77,7 @@ export default class PopularPage extends Component {
       }
     );
 
-    return <View style={{ flex: 1, marginTop: 30 }}>
+    return <View style={styles.container}>
       {navigationBar}
       <TabNavigator />
     </View>
@@ -149,7 +149,7 @@ class PopularTab extends Component {
           callback,
         }, 'DetailPage')
       }}
-    // onFavorite={(item, isFavorite) => FavoriteUtil.onFavorite(favoriteDao, item, isFavorite, FLAG_STORAGE.flag_popular)}
+    onFavorite={(item, isFavorite) => FavoriteUtil.onFavorite(favoriteDao, item, isFavorite, FLAG_STORAGE.flag_popular)}
 
     />
   }

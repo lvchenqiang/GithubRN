@@ -15,8 +15,7 @@ import {
   import Ionicons from 'react-native-vector-icons/Ionicons';
   import Entypo from 'react-native-vector-icons/Entypo';
   import {BottomTabBar} from 'react-navigation-tabs';
-  import NavigationUtil from './NavigationUtil';
-
+  
 
   const TABS = {/// 配置路由的页面
     PopularPage:{
