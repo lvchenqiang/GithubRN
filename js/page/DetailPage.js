@@ -54,10 +54,25 @@ onBack() {
   }
 }
 
+_onFavoriteButtonClick(){
+  const {projectModel,callback}=this.params;
+  const isFavorite=projectModel.isFavorite=!projectModel.isFavorite;
+  callback(isFavorite);//更新Item的收藏状态
+  this.setState({
+      isFavorite:isFavorite,
+  });
+  let key = projectModel.item.fullName ? projectModel.item.fullName : projectModel.item.id.toString();
+  if (projectModel.isFavorite) {
+      this.favoriteDao.saveFavoriteItem(key, JSON.stringify(projectModel.item));
+  } else {
+      this.favoriteDao.removeFavoriteItem(key);
+  }
+}
+
 _renderRightButton() {
   return (<View style={{flexDirection: 'row'}}>
           <TouchableOpacity
-              onPress={() => this.onFavoriteButtonClick()}>
+              onPress={() => this._onFavoriteButtonClick()}>
               <FontAwesome
                   name={this.state.isFavorite ? 'star' : 'star-o'}
                   size={20}

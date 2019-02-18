@@ -13,14 +13,13 @@ import actions from '../action';
 import NavigationUtil from '../navigator/NavigationUtil';
 import FavoriteUtil from "../util/FavoriteUtil";
 import FavoriteDao from "../expand/dao/FavoriteDao";
-import NavigationBar from '../common/NavigationBar';
+
 
 
 import { FLAG_STORAGE } from "../expand/dao/DataStore";
 import TrendingItem from '../common/TrendingItem';
 import TrendingDialog, { TimeSpans } from '../common/TrendingDialog'
-import SafeAreaViewPlus from "../common/SafeAreaViewPlus";
-
+import NavigationBar from '../common/NavigationBar';
 
 
 const EVENT_TYPE_TIME_SPAN_CHANGE = "EVENT_TYPE_TIME_SPAN_CHANGE";
@@ -213,7 +212,7 @@ class TrendingTab extends Component {
           callback,
         }, 'DetailPage')
       }}
-    onFavorite={(item, isFavorite) => FavoriteUtil.onFavorite(favoriteDao, item, isFavorite, FLAG_STORAGE.flag_popular)}
+    onFavorite={(item, isFavorite) => FavoriteUtil.onFavorite(favoriteDao, item, isFavorite, FLAG_STORAGE.flag_trending)}
 
     />
   }
@@ -299,7 +298,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   tabStyle: {
-    minWidth: 50,
+    // minWidth: 50,
   },
   indicatorStyle: {
     height: 2,
