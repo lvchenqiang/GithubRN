@@ -27,11 +27,6 @@ export default class MinePage extends Component {
       <View style={styles.container}>
       {navigationBar}
       <Text style={styles.welcome}>MinePage</Text>
-      <Text onPress={()=>{
-        NavigationUtil.goPage({
-          navigation:this.props.navigation
-        },"DetailPage")
-      }}>跳转到详情页</Text>
       </View>
     )
   }
