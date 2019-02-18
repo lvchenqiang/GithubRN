@@ -6,7 +6,8 @@ import {
   createMaterialTopTabNavigator,
 } from 'react-navigation';
 import Ionicons from 'react-native-vector-icons/Ionicons'
-
+import EventBus from "react-native-event-bus";
+import EventTypes from "../util/EventTypes";
 
 import actions from '../action';
 
@@ -96,6 +97,21 @@ class PopularTab extends Component {
 
   componentDidMount() {
     this.loadData();
+    EventBus.getInstance().addListener(EventTypes.favorite_changed_popular, this.favoriteChangeListener = () => {
+      this.isFavoriteChanged = true;
+  });
+    EventBus.getInstance().addListener(EventTypes.bottom_tab_select, this.bottomTabSelectListener = (data) => {
+      if (data.to === 0 && this.isFavoriteChanged) {
+          this.loadData(null, true);
+      }
+  });
+  
+  }
+
+
+  componentWillUnmount() {
+    EventBus.getInstance().removeListener(this.favoriteChangeListener);
+    EventBus.getInstance().removeListener(this.bottomTabSelectListener);
   }
 
   loadData(loadMore, refreshFavorite) {

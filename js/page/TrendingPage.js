@@ -6,7 +6,8 @@ import {
   createMaterialTopTabNavigator,
 } from 'react-navigation';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
-
+import EventBus from "react-native-event-bus";
+import EventTypes from "../util/EventTypes";
 
 import actions from '../action';
 
@@ -151,12 +152,23 @@ class TrendingTab extends Component {
       this.timeSpan = timeSpan;
       this.loadData();
   });
+
+  EventBus.getInstance().addListener(EventTypes.favoriteChanged_trending, this.favoriteChangeListener = () => {
+    this.isFavoriteChanged = true;
+});
+  EventBus.getInstance().addListener(EventTypes.bottom_tab_select, this.bottomTabSelectListener = (data) => {
+    if (data.to === 1 && this.isFavoriteChanged) {
+        this.loadData(null, true);
+    }
+})
   }
 
   componentWillUnmount() {
     if (this.timeSpanChangeListener) {
         this.timeSpanChangeListener.remove();
     }
+    EventBus.getInstance().removeListener(this.favoriteChangeListener);
+    EventBus.getInstance().removeListener(this.bottomTabSelectListener);
     
 }
 

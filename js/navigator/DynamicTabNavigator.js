@@ -15,7 +15,8 @@ import {
   import Ionicons from 'react-native-vector-icons/Ionicons';
   import Entypo from 'react-native-vector-icons/Entypo';
   import {BottomTabBar} from 'react-navigation-tabs';
-  
+  import EventBus from 'react-native-event-bus'
+  import EventTypes from '../util/EventTypes';
 
   const TABS = {/// 配置路由的页面
     PopularPage:{
@@ -98,7 +99,12 @@ import {
 
   render() {
     const Tabs = this._tabNavigator();
-    return <Tabs></Tabs>
+    return <Tabs onNavigationStateChange={(prevState, newState, action) => {
+      EventBus.getInstance().fireEvent(EventTypes.bottom_tab_select, {//发送底部tab切换的事件
+          from: prevState.index,
+          to: newState.index
+      })
+  }}></Tabs>
   }
 }
 
