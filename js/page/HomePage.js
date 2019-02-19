@@ -51,10 +51,15 @@ import {Platform, StyleSheet, Text, View} from 'react-native';
 }
 
 
+
 const mapStateToProps = state => ({
   nav: state.nav,
+  customThemeViewVisible: state.theme.customThemeViewVisible,
+  theme: state.theme.theme,
 });
 
+const mapDispatchToProps = dispatch => ({
+  onShowCustomThemeView: (show) => dispatch(actions.onShowCustomThemeView(show)),
+});
 
-
-export default connect(mapStateToProps)(HomePage);
+export default connect(mapStateToProps, mapDispatchToProps)(HomePage);

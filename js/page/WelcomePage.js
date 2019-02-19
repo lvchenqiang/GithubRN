@@ -3,9 +3,10 @@ import {StyleSheet,Text, View} from 'react-native';
 
 import NavigationUtil from '../navigator/NavigationUtil';
 
-
-export default class WelcomePage extends Component {
+ class WelcomePage extends Component {
   componentDidMount() {
+    this.props.onThemeInit();
+    
     this.timer = setTimeout(() => {
       NavigationUtil.resetToHomePage({
           navigation: this.props.navigation
@@ -27,6 +28,11 @@ export default class WelcomePage extends Component {
   }
 }
 
+const mapDispatchToProps = dispatch => ({
+  onThemeInit: () => dispatch(actions.onThemeInit()),
+});
+
+export default connect(null, mapDispatchToProps)(WelcomePage);
 
 const styles = StyleSheet.create({
   container: {
