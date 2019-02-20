@@ -14,7 +14,6 @@ import ViewUtil from "../util/ViewUtil";
 import {FLAG_LANGUAGE} from "../expand/dao/LanguageDao";
 import actions from "../action";
 
-const THEME_COLOR = '#076';
 
  class MinePage extends Component {
 
@@ -64,7 +63,7 @@ const THEME_COLOR = '#076';
 
 getItem(menu) {
   const {theme} = this.props;
-  return ViewUtil.getMenuItem(() => this.onClick(menu), menu, THEME_COLOR);
+  return ViewUtil.getMenuItem(() => this.onClick(menu), menu, theme.themeColor);
 }
 
 
@@ -72,14 +71,14 @@ getItem(menu) {
 render() {
   const {theme} = this.props;
   let statusBar = {
-      backgroundColor: THEME_COLOR,
+      backgroundColor: theme.themeColor,
       barStyle: 'light-content',
   };
   let navigationBar =
       <NavigationBar
           title={'我的'}
           statusBar={statusBar}
-          style={{backgroundColor:THEME_COLOR}}
+          style={theme.styles.navBar}
       />;
   return (
       <View style={GlobalStyles.root_container}>

@@ -15,7 +15,6 @@ import EventBus from "react-native-event-bus";
 import EventTypes from "../util/EventTypes";
 
 
-const THEME_COLOR = '#076';
 class FavoritePage extends Component {
 
   constructor(props) {
@@ -27,13 +26,13 @@ class FavoritePage extends Component {
 render() {
   const {theme} = this.props;
   let statusBar = {
-      backgroundColor: THEME_COLOR,
+      backgroundColor: theme.themeColor,
       barStyle: 'light-content',
   };
   let navigationBar = <NavigationBar
       title={'收藏'}
       statusBar={statusBar}
-      style={{backgroundColor:THEME_COLOR}}
+      style={theme.styles.navBar}
   />;
   const TabNavigator = createMaterialTopTabNavigator({
           'Popular': {
@@ -53,7 +52,7 @@ render() {
               tabStyle: styles.tabStyle,
               upperCaseLabel: false,//是否使标签大写，默认为true
               style: {
-                  backgroundColor: '#678',//TabBar 的背景颜色
+                  backgroundColor: theme.themeColor,//TabBar 的背景颜色
                   height: 30//fix 开启scrollEnabled后再Android上初次加载时闪烁问题
               },
               indicatorStyle: styles.indicatorStyle,//标签指示器的样式

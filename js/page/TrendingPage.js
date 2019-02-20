@@ -25,10 +25,11 @@ import NavigationBar from '../common/NavigationBar';
 
 const EVENT_TYPE_TIME_SPAN_CHANGE = "EVENT_TYPE_TIME_SPAN_CHANGE";
 const URL = 'https://github.com/trending/';
-const THEME_COLOR = '#076';
+
 const favoriteDao = new FavoriteDao(FLAG_STORAGE.flag_trending);
 
-export default class TrendingPage extends Component {
+
+class TrendingPage extends Component {
 
 
   constructor(props) {
@@ -43,9 +44,10 @@ export default class TrendingPage extends Component {
 
   _genTab() {
     const tabs = {};
+    const {keys, theme} = this.props;
     this.tabNames.forEach((item, index) => {
       tabs[`tab${index}`] = {
-        screen: props => <TrendingTabPage {...props} tabLabel={item} timeSpan={this.state.timeSpan} />,
+        screen: props => <TrendingTabPage {...props} tabLabel={item} timeSpan={this.state.timeSpan} theme={theme}/>,
         navigationOptions: {
           title: item
         }
@@ -89,9 +91,11 @@ _renderTrendingDialog() {
 }
 
 _genTabNav(){
-  if(this.tabNav){
-    return this.tabNav;
-  }
+
+  const {theme} = this.props;
+
+  if(theme !== this.theme || this.tabNav){
+    this.theme = theme;
   this.tabNav = createMaterialTopTabNavigator(//优化效率：根据需要选择是否重新创建建TabNavigator，通常tab改变后才重新创建
     this._genTab(),
     {
@@ -100,7 +104,7 @@ _genTabNav(){
         upperCaseLabel: false, // 标签是否大写
         scrollEnabled: true,// 是否可以滚动
         style: {
-          backgroundColor: '#678', //tabbar的背景色
+          backgroundColor: theme.themeColor, //tabbar的背景色
           height: 30//fix 开启scrollEnabled后再Android上初次加载时闪烁问题
         },
         indicatorStyle: styles.indicatorStyle,
@@ -109,20 +113,23 @@ _genTabNav(){
       lazy: true
     }
   );
+  }
+
+
   return this.tabNav;
 }
   render() {
-
+    const {theme} = this.props;
     let statusBar = {
-      backgroundColor: THEME_COLOR,
+      backgroundColor: theme.themeColor,
       barStyle: 'light-content',
     };
+
     let navigationBar = <NavigationBar
-      titleView={this._renderTitleView()}
-      statusBar={statusBar}
-      style={{ backgroundColor: THEME_COLOR }}
-    // rightButton={this.renderRightButton()}
-    />;
+            titleView={this._renderTitleView()}
+            statusBar={statusBar}
+            style={theme.styles.navBar}
+        />;
 
     const TabNavigator = this._genTabNav();
 
@@ -134,6 +141,17 @@ _genTabNav(){
     </View>
   }
 }
+
+const mapTrendingStateToProps = state => ({
+  // keys: state.language.languages,
+  theme: state.theme.theme,
+});
+const mapTrendingDispatchToProps = dispatch => ({
+  // onLoadLanguage: (flag) => dispatch(actions.onLoadLanguage(flag))
+});
+//注意：connect只是个function，并不应定非要放在export后面
+export default connect(mapTrendingStateToProps, mapTrendingDispatchToProps)(TrendingPage);
+
 
 const pageSize = 10;//设为常量，防止修改
 
@@ -240,7 +258,7 @@ class TrendingTab extends Component {
   }
 
   render() {
-    const { trending } = this.props;
+    const { trending, theme} = this.props;
     let store = trending[this.storeName];
     if (!store) {
       store = {
@@ -259,9 +277,9 @@ class TrendingTab extends Component {
           refreshControl={
             <RefreshControl
               title={"loading"}
-              titleColor={THEME_COLOR}
-              tintColor={THEME_COLOR}
-              colors={[THEME_COLOR]}
+              titleColor={theme.themeColor}
+              tintColor={theme.themeColor}
+              colors={[theme.themeColor]}
               refreshing={store.isLoading}
               onRefresh={() => this.loadData()}
             />

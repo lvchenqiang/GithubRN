@@ -1,15 +1,16 @@
-import React, {Component} from 'react';
-import {Platform, StyleSheet, Text, View} from 'react-native';
+  import React, {Component} from 'react';
+  import {NavigationActions} from "react-navigation";
+  import {connect} from 'react-redux'
 
-  
+
+  import CustomTheme from '../page/CustomTheme';
   import NavigationUtil from '../navigator/NavigationUtil';
 
   import DynamicTabNavigator from '../navigator/DynamicTabNavigator';
-  import {NavigationActions} from "react-navigation";
-  import {BackHandler} from 'react-native';
-  import {connect} from 'react-redux';
+ ;
   import BackPressComponent from "../common/BackPressComponent";
   import SafeAreaViewPlus from "../common/SafeAreaViewPlus";
+  import actions from "../action";
 
  class HomePage extends Component {
 
@@ -42,10 +43,22 @@ import {Platform, StyleSheet, Text, View} from 'react-native';
       return true;
   };
 
+  renderCustomThemeView() {
+    const {customThemeViewVisible, onShowCustomThemeView} = this.props;
+    return (<CustomTheme
+        visible={customThemeViewVisible}
+        {...this.props}
+        onClose={() => onShowCustomThemeView(false)}
+    />)
+}
+
   render() {
+    const {theme} = this.props;
     NavigationUtil.navigation = this.props.navigation
-    return <SafeAreaViewPlus topColor={'red'}>
+    return <SafeAreaViewPlus topColor={theme.themeColor}
+           >
       <DynamicTabNavigator/>
+      {this.renderCustomThemeView()}
     </SafeAreaViewPlus>
   }
 }

@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { FlatList, StyleSheet, Text, View, RefreshControl, ActivityIndicator } from 'react-native';
+import { FlatList, StyleSheet, Text, View, RefreshControl, ActivityIndicator, TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
 import Toast from 'react-native-easy-toast'
 import {
@@ -23,10 +23,9 @@ import PopularItem from '../common/PopularItem';
 
 const URL = 'https://api.github.com/search/repositories?q=';
 const QUERY_STR = '&sort=stars';
-const THEME_COLOR = '#076';
 const favoriteDao = new FavoriteDao(FLAG_STORAGE.flag_popular);
 
-export default class PopularPage extends Component {
+ class PopularPage extends Component {
 
 
   constructor(props) {
@@ -37,9 +36,10 @@ export default class PopularPage extends Component {
 
   _genTab() {
     const tabs = {};
+    const { keys, theme } = this.props;
     this.tabNames.forEach((item, index) => {
       tabs[`tab${index}`] = {
-        screen: props => <PopularTabPage {...props} tabLabel={item} />,
+        screen: props => <PopularTabPage {...props} tabLabel={item} theme={theme} />,
         navigationOptions: {
           title: item
         }
@@ -47,17 +47,38 @@ export default class PopularPage extends Component {
     });
     return tabs;
   }
-  render() {
 
+  _renderRightButton() {
+    const { theme } = this.props;
+    return <TouchableOpacity
+      onPress={() => {
+        AnalyticsUtil.track("SearchButtonClick");
+        NavigationUtil.goPage({ theme }, 'SearchPage')
+      }}
+    >
+      <View style={{ padding: 5, marginRight: 8 }}>
+        <Ionicons
+          name={'ios-search'}
+          size={24}
+          style={{
+            marginRight: 8,
+            alignSelf: 'center',
+            color: 'white',
+          }} />
+      </View>
+    </TouchableOpacity>
+  }
+  render() {
+    const { theme } = this.props;
     let statusBar = {
-      backgroundColor: THEME_COLOR,
+      backgroundColor: theme.themeColor,
       barStyle: 'light-content',
     };
     let navigationBar = <NavigationBar
       title={'最热'}
       statusBar={statusBar}
-      style={{ backgroundColor: THEME_COLOR }}
-    // rightButton={this.renderRightButton()}
+      style={theme.styles.navBar}
+      rightButton={this._renderRightButton()}
     />;
 
     const TabNavigator = createMaterialTopTabNavigator(
@@ -68,7 +89,7 @@ export default class PopularPage extends Component {
           upperCaseLabel: false, // 标签是否大写
           scrollEnabled: true,// 是否可以滚动
           style: {
-            backgroundColor: '#678', //tabbar的背景色
+            backgroundColor: theme.themeColor, //tabbar的背景色
             height: 30//fix 开启scrollEnabled后再Android上初次加载时闪烁问题
           },
           indicatorStyle: styles.indicatorStyle,
@@ -85,6 +106,16 @@ export default class PopularPage extends Component {
   }
 }
 
+const mapPopularStateToProps = state => ({
+  // keys: state.language.keys,
+  theme: state.theme.theme,
+});
+const mapPopularDispatchToProps = dispatch => ({
+  // onLoadLanguage: (flag) => dispatch(actions.onLoadLanguage(flag))
+});
+//注意：connect只是个function，并不应定非要放在export后面
+export default connect(mapPopularStateToProps, mapPopularDispatchToProps)(PopularPage);
+
 const pageSize = 10;//设为常量，防止修改
 
 class PopularTab extends Component {
@@ -99,13 +130,13 @@ class PopularTab extends Component {
     this.loadData();
     EventBus.getInstance().addListener(EventTypes.favorite_changed_popular, this.favoriteChangeListener = () => {
       this.isFavoriteChanged = true;
-  });
+    });
     EventBus.getInstance().addListener(EventTypes.bottom_tab_select, this.bottomTabSelectListener = (data) => {
       if (data.to === 0 && this.isFavoriteChanged) {
-          this.loadData(null, true);
+        this.loadData(null, true);
       }
-  });
-  
+    });
+
   }
 
 
@@ -165,7 +196,7 @@ class PopularTab extends Component {
           callback,
         }, 'DetailPage')
       }}
-    onFavorite={(item, isFavorite) => FavoriteUtil.onFavorite(favoriteDao, item, isFavorite, FLAG_STORAGE.flag_popular)}
+      onFavorite={(item, isFavorite) => FavoriteUtil.onFavorite(favoriteDao, item, isFavorite, FLAG_STORAGE.flag_popular)}
 
     />
   }
@@ -181,7 +212,7 @@ class PopularTab extends Component {
   }
 
   render() {
-    const { popular } = this.props;
+    const { popular ,theme} = this.props;
     let store = popular[this.storeName];
     if (!store) {
       store = {
@@ -200,9 +231,9 @@ class PopularTab extends Component {
           refreshControl={
             <RefreshControl
               title={"loading"}
-              titleColor={THEME_COLOR}
-              tintColor={THEME_COLOR}
-              colors={[THEME_COLOR]}
+              titleColor={theme.themeColor}
+              tintColor={theme.themeColor}
+              colors={[theme.themeColor]}
               refreshing={store.isLoading}
               onRefresh={() => this.loadData()}
             />

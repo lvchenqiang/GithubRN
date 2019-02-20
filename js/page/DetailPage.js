@@ -11,7 +11,6 @@ import NavigationUtil from "../navigator/NavigationUtil";
 import SafeAreaViewPlus from "../common/SafeAreaViewPlus";
 import BackPressComponent from "../common/BackPressComponent";
 
-const THEME_COLOR = '#678';
 const TRENDING_URL = 'https://github.com/';
 
 export default class DetailPage extends Component {
@@ -98,17 +97,18 @@ _onNavigationStateChange(navState) {
 
   render() {
 
+    const {theme} = this.params;
     const titleLayoutStyle = this.state.title.length > 20 ? {paddingRight: 30} : null;
     let navigationBar = <NavigationBar
         leftButton={ViewUtil.getLeftBackButton(() => this.onBack())}
         titleLayoutStyle={titleLayoutStyle}
         title={this.state.title}
-        style={{backgroundColor:THEME_COLOR}}
+        style={theme.styles.navBar}
         rightButton={this._renderRightButton()}
     />;
 
     return (
-      <SafeAreaViewPlus topColor={THEME_COLOR}>
+      <SafeAreaViewPlus topColor={theme.themeColor}>
       
       {navigationBar}
       <WebView

@@ -1,12 +1,14 @@
 import React, { Component } from 'react';
 import {StyleSheet,Text, View} from 'react-native';
-
+import {connect} from 'react-redux';
 import NavigationUtil from '../navigator/NavigationUtil';
+import actions from "../action";
+
 
  class WelcomePage extends Component {
   componentDidMount() {
     this.props.onThemeInit();
-    
+
     this.timer = setTimeout(() => {
       NavigationUtil.resetToHomePage({
           navigation: this.props.navigation
