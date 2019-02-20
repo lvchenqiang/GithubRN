@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import Toast from 'react-native-easy-toast'
 import {
   createMaterialTopTabNavigator,
+  createAppContainer
 } from 'react-navigation';
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import EventBus from "react-native-event-bus";
@@ -18,6 +19,7 @@ import NavigationBar from '../common/NavigationBar';
 
 
 import { FLAG_STORAGE } from "../expand/dao/DataStore";
+import {FLAG_LANGUAGE} from "../expand/dao/LanguageDao";
 import PopularItem from '../common/PopularItem';
 
 
@@ -30,20 +32,23 @@ const favoriteDao = new FavoriteDao(FLAG_STORAGE.flag_popular);
 
   constructor(props) {
     super(props);
-    this.tabNames = ["Java", "Android", "iOS", "React", "React Native", "PHP"];
+    const {onLoadLanguage} = this.props;
+    onLoadLanguage(FLAG_LANGUAGE.flag_key);
 
   }
 
-  _genTab() {
+  _genTabs() {
     const tabs = {};
-    const { keys, theme } = this.props;
-    this.tabNames.forEach((item, index) => {
-      tabs[`tab${index}`] = {
-        screen: props => <PopularTabPage {...props} tabLabel={item} theme={theme} />,
-        navigationOptions: {
-          title: item
+    const {keys, theme} = this.props;
+    keys.forEach((item, index) => {
+        if (item.checked) {
+            tabs[`tab${index}`] = {
+                screen: props => <PopularTabPage {...props} tabLabel={item.name} theme={theme}/>,
+                navigationOptions: {
+                    title: item.name
+                }
+            }
         }
-      }
     });
     return tabs;
   }
@@ -69,7 +74,7 @@ const favoriteDao = new FavoriteDao(FLAG_STORAGE.flag_popular);
     </TouchableOpacity>
   }
   render() {
-    const { theme } = this.props;
+    const { keys,theme } = this.props;
     let statusBar = {
       backgroundColor: theme.themeColor,
       barStyle: 'light-content',
@@ -81,37 +86,36 @@ const favoriteDao = new FavoriteDao(FLAG_STORAGE.flag_popular);
       rightButton={this._renderRightButton()}
     />;
 
-    const TabNavigator = createMaterialTopTabNavigator(
-      this._genTab(),
-      {
-        tabBarOptions: {
-          tabStyle: styles.tabStyle,
-          upperCaseLabel: false, // 标签是否大写
-          scrollEnabled: true,// 是否可以滚动
-          style: {
-            backgroundColor: theme.themeColor, //tabbar的背景色
-            height: 30//fix 开启scrollEnabled后再Android上初次加载时闪烁问题
+    const TabNavigator = keys.length ? createAppContainer(createMaterialTopTabNavigator(
+      this._genTabs(), {
+          tabBarOptions: {
+              tabStyle: styles.tabStyle,
+              upperCaseLabel: false,//是否使标签大写，默认为true
+              scrollEnabled: true,//是否支持 选项卡滚动，默认false
+              style: {
+                  backgroundColor: theme.themeColor,//TabBar 的背景颜色
+                  height: 30//fix 开启scrollEnabled后再Android上初次加载时闪烁问题
+              },
+              indicatorStyle: styles.indicatorStyle,//标签指示器的样式
+              labelStyle: styles.labelStyle,//文字的样式
           },
-          indicatorStyle: styles.indicatorStyle,
-          labelStyle: styles.labelStyle
-        },
-        lazy: true
+          lazy: true
       }
-    );
+  )) : null;
 
     return <View style={styles.container}>
       {navigationBar}
-      <TabNavigator />
+      {TabNavigator && <TabNavigator/>}
     </View>
   }
 }
 
 const mapPopularStateToProps = state => ({
-  // keys: state.language.keys,
+  keys: state.language.keys,
   theme: state.theme.theme,
 });
 const mapPopularDispatchToProps = dispatch => ({
-  // onLoadLanguage: (flag) => dispatch(actions.onLoadLanguage(flag))
+  onLoadLanguage: (flag) => dispatch(actions.onLoadLanguage(flag))
 });
 //注意：connect只是个function，并不应定非要放在export后面
 export default connect(mapPopularStateToProps, mapPopularDispatchToProps)(PopularPage);

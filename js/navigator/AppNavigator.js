@@ -1,6 +1,7 @@
 import {
     createStackNavigator,
     createSwitchNavigator,
+    createAppContainer
 } from 'react-navigation';
 import {connect} from 'react-redux';
 import {
@@ -10,8 +11,8 @@ import WelcomePage from '../page/WelcomePage';
 import HomePage from '../page/HomePage';
 import DetailPage from '../page/DetailPage';
 import WebViewPage from '../page/WebViewPage';
-
-
+import CustomKeyPage from '../page/CustomKeyPage';
+import SortKeyPage from '../page/SortKeyPage';
 import AboutPage from '../page/about/AboutPage';
 import AboutMePage from '../page/about/AboutMePage';
 export const rootCom = 'Init';//设置根路由
@@ -57,18 +58,30 @@ const MainNavigator = createStackNavigator({
             header: null,// 可以通过将header设为null 来禁用StackNavigator的Navigation Bar
         }
     },
+    CustomKeyPage: {
+        screen: CustomKeyPage,
+        navigationOptions: {
+            header: null,// 可以通过将header设为null 来禁用StackNavigator的Navigation Bar
+        }
+    },
+    SortKeyPage: {
+        screen: SortKeyPage,
+        navigationOptions: {
+            header: null,// 可以通过将header设为null 来禁用StackNavigator的Navigation Bar
+        }
+    },
 });
 
 
 
-export const RootNavigator = createSwitchNavigator({
+export const RootNavigator = createAppContainer(createSwitchNavigator({
     Init: InitNavigator,
     Main: MainNavigator,
 }, {
     navigationOptions: {
         header: null,// 可以通过将header设为null 来禁用StackNavigator的Navigation Bar
     }
-});
+}));
 
 /**
  * 1.初始化react-navigation与redux的中间件，

@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {Platform, StyleSheet, Text, View} from 'react-native';
 import {
     createBottomTabNavigator,
+    createAppContainer
   } from 'react-navigation';
   import {connect} from 'react-redux';
 
@@ -89,11 +90,11 @@ import {
       const tabs = {PopularPage, TrendingPage, FavoritePage,MinePage};
       PopularPage.navigationOptions.tabBarLabel = "最热";
       // 动态配置tab
-    return this.Tabs = createBottomTabNavigator(tabs,{
+    return this.Tabs = createAppContainer(createBottomTabNavigator(tabs,{
         tabBarComponent:props => {
             return <TabBarComponent theme={this.props.theme} {...props}/>
         }
-    });
+    }));
   }
 
 

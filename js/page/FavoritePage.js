@@ -34,7 +34,7 @@ render() {
       statusBar={statusBar}
       style={theme.styles.navBar}
   />;
-  const TabNavigator = createMaterialTopTabNavigator({
+  const TabNavigator = createAppContainer(createMaterialTopTabNavigator({
           'Popular': {
               screen: props => <FavoriteTabPage {...props} flag={FLAG_STORAGE.flag_popular} theme={theme}/>,//初始化Component时携带默认参数 @https://github.com/react-navigation/react-navigation/issues/2392
               navigationOptions: {
@@ -59,7 +59,7 @@ render() {
               labelStyle: styles.labelStyle,//文字的样式
           }
       }
-  );
+  ));
   return <View style={styles.container}>
       {navigationBar}
       <TabNavigator/>
