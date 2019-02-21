@@ -16,6 +16,7 @@ import NavigationUtil from '../navigator/NavigationUtil';
 import FavoriteUtil from "../util/FavoriteUtil";
 import FavoriteDao from "../expand/dao/FavoriteDao";
 import NavigationBar from '../common/NavigationBar';
+import AnalyticsUtil from "../util/AnalyticsUtil";
 
 
 import { FLAG_STORAGE } from "../expand/dao/DataStore";
@@ -57,7 +58,7 @@ const favoriteDao = new FavoriteDao(FLAG_STORAGE.flag_popular);
     const { theme } = this.props;
     return <TouchableOpacity
       onPress={() => {
-        AnalyticsUtil.track("SearchButtonClick");
+        // AnalyticsUtil.track("SearchButtonClick");
         NavigationUtil.goPage({ theme }, 'SearchPage')
       }}
     >

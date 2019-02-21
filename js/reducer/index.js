@@ -4,7 +4,7 @@ import popular from './popular'
 import trending from './trending'
 import favorite from './favorite'
 import language from './language'
-// import search from './search'
+import search from './search'
 
 import {rootCom, RootNavigator} from '../navigator/AppNavigator';
 
@@ -31,7 +31,7 @@ const index = combineReducers({
     trending: trending,
     favorite: favorite,
     language: language,
-    // search: search,
+    search: search,
 });
 
 export default index;
