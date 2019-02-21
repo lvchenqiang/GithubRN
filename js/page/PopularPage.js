@@ -58,7 +58,7 @@ const favoriteDao = new FavoriteDao(FLAG_STORAGE.flag_popular);
     const { theme } = this.props;
     return <TouchableOpacity
       onPress={() => {
-        // AnalyticsUtil.track("SearchButtonClick");
+        AnalyticsUtil.track("SearchButtonClick");
         NavigationUtil.goPage({ theme }, 'SearchPage')
       }}
     >

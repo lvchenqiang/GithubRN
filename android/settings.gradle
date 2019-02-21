@@ -1,5 +1,5 @@
 rootProject.name = 'GithubRN'
-include ':react-native-webview'
+include ':react-native-webview', ':trackshare'
 project(':react-native-webview').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-webview/android')
 include ':react-native-vector-icons'
 project(':react-native-vector-icons').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-vector-icons/android')

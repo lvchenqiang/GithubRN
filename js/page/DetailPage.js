@@ -7,10 +7,11 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import NavigationBar from '../common/NavigationBar'
 import FavoriteDao from "../expand/dao/FavoriteDao";
 import ViewUtil from "../util/ViewUtil";
+import ShareUtil from "../util/ShareUtil";
 import NavigationUtil from "../navigator/NavigationUtil";
 import SafeAreaViewPlus from "../common/SafeAreaViewPlus";
 import BackPressComponent from "../common/BackPressComponent";
-
+import share from "../res/data/share";
 const TRENDING_URL = 'https://github.com/';
 
 export default class DetailPage extends Component {
@@ -79,10 +80,10 @@ _renderRightButton() {
               />
           </TouchableOpacity>
           {ViewUtil.getShareButton(() => {
-              // let shareApp = share.share_app;
-              // ShareUtil.shareboard(shareApp.content, shareApp.imgUrl, this.url, shareApp.title, [0, 1, 2, 3, 4, 5, 6], (code, message) => {
-              //     console.log("result:" + code + message);
-              // });
+              let shareApp = share.share_app;
+              ShareUtil.shareboard(shareApp.content, shareApp.imgUrl, this.url, shareApp.title, [0, 1, 2, 3, 4, 5, 6], (code, message) => {
+                  console.log("result:" + code + message);
+              });
           })}
       </View>
   )
