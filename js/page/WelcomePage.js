@@ -3,13 +3,14 @@ import {StyleSheet,Text, View} from 'react-native';
 import {connect} from 'react-redux';
 import NavigationUtil from '../navigator/NavigationUtil';
 import actions from "../action";
-
+import SplashScreen from 'react-native-splash-screen'
 
  class WelcomePage extends Component {
   componentDidMount() {
     this.props.onThemeInit();
 
     this.timer = setTimeout(() => {
+      SplashScreen.hide();
       NavigationUtil.resetToHomePage({
           navigation: this.props.navigation
       })
