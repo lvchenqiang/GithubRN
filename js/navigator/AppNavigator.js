@@ -14,6 +14,7 @@ import WebViewPage from '../page/WebViewPage';
 import CustomKeyPage from '../page/CustomKeyPage';
 import SortKeyPage from '../page/SortKeyPage';
 import SearchPage from '../page/SearchPage'; 
+import CodePushPage from '../page/CodePushPage';
 
 import AboutPage from '../page/about/AboutPage';
 import AboutMePage from '../page/about/AboutMePage';
@@ -74,6 +75,12 @@ const MainNavigator = createStackNavigator({
     },
     SearchPage: {
         screen: SearchPage,
+        navigationOptions: {
+            header: null,// 可以通过将header设为null 来禁用StackNavigator的Navigation Bar
+        }
+    },
+    CodePushPage: {
+        screen: CodePushPage,
         navigationOptions: {
             header: null,// 可以通过将header设为null 来禁用StackNavigator的Navigation Bar
         }

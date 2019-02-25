@@ -81,7 +81,7 @@ const favoriteDao = new FavoriteDao(FLAG_STORAGE.flag_popular);
       barStyle: 'light-content',
     };
     let navigationBar = <NavigationBar
-      title={'最热'}
+      title={'最热gggjhgjhgjhg'}
       statusBar={statusBar}
       style={theme.styles.navBar}
       rightButton={this._renderRightButton()}
