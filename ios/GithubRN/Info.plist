@@ -58,7 +58,7 @@
 	<key>CFBundleVersion</key>
 	<string>1</string>
 	<key>CodePushDeploymentKey</key>
-	<string>hsmM9EejcNlnqWkwEDfPiU1iB7EtsYij</string>
+	<string>qZR-FCJiVdHYjfh1TmNOq1OOFgyr1c75ba22-28a0-4fa2-be70-761823f06aa6</string>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
 		<string>wechat</string>
@@ -124,7 +124,7 @@
 		</dict>
 	</dict>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string></string>
+	<string/>
 	<key>UIAppFonts</key>
 	<array>
 		<string>AntDesign.ttf</string>
@@ -155,7 +155,5 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
-  <key>CodePushDeploymentKey</key>
-  <string>qZR-FCJiVdHYjfh1TmNOq1OOFgyr1c75ba22-28a0-4fa2-be70-761823f06aa6</string>
 </dict>
 </plist>
