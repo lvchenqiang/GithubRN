@@ -36,7 +36,8 @@ public class MainApplication extends Application implements ReactApplication {
           new MainReactPackage(),
             new SplashScreenReactPackage(),
             new RNCWebViewPackage(),
-            new VectorIconsPackage()
+            new VectorIconsPackage(),
+              new CodePush("QrFFM8V6715gIo2AtXtzu3rpZgQy1c75ba22-28a0-4fa2-be70-761823f06aa6", MainApplication.this, BuildConfig.DEBUG)
       );
     }
 
