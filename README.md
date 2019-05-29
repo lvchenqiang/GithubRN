@@ -60,10 +60,19 @@
 
 部分页面效果图:
 
-![](./1.png)
-![](./2.png)
-![](./3.png)
-![](./4.png)
+<figure class="half">
+
+<img src="./1.png" width="200" align=center />
+
+<img src="./2.png" width="200" align=center />
+
+<img src="./3.png" width="200" align=center />
+
+<img src="./4.png" width="200" align=center />
+
+</figure>
+
+
 
 
 
